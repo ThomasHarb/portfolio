@@ -1,4 +1,4 @@
-# [Thomas harbonnier portfolio]
+# Thomas harbonnier portfolio
 
 Material-UI & ReactJS based Landing Pages Kit made with [Material UI's]
 
@@ -25,5 +25,5 @@ The full documentation for the React Material Kit can be found [here](https://ne
 ## Contact Us
 
 - Email Me: harbonnier.th@gmail.com
-- [Follow us on Linkedin](https://www.linkedin.com)
-- [Follow us on GitHub](https://github.com/ThomasHarb/portfolio)
+- [Follow me on Linkedin](https://www.linkedin.com)
+- [Follow me on GitHub](https://github.com/ThomasHarb/portfolio)
