@@ -10,10 +10,10 @@
     "build": "cross-env GENERATE_SOURCEMAP=false react-scripts build",
     "prettier:fix": "prettier './src/**/*.js' --write",
     "eslint:fix": "eslint ./src --fix",
-    "clear-all": "rimraf ./build ./node_modules"
+    "clear-all": "rimraf ./build ./node_modules",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
-  "predeploy": "npm run build",
-  "deploy": "gh-pages -d build",
   "eslintConfig": {
     "extends": [
       "react-app"
