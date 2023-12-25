@@ -1,6 +1,6 @@
 # Thomas harbonnier portfolio
 
-Material-UI & ReactJS based Landing Pages Kit made with [Material UI's]
+Material-UI & ReactJS based Landing Pages Kit made with Material UI's
 
 
 ## Built with
@@ -11,7 +11,7 @@ Material-UI & ReactJS based Landing Pages Kit made with [Material UI's]
 
 ## Features
 
-Portfolio made with React to present the work of thomas Harbonnier python developper and data analyst.
+Portfolio made with React to present the Thomas Harbonnier's work python developper and data analyst.
 ## Quick start
 
 - Install dependencies: `yarn install`
