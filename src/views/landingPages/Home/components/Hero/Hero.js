@@ -80,7 +80,7 @@ const Hero = () => {
                     variant="contained"
                     color="primary"
                     size="large"
-                    href={"https://thomasharb.github.io/contact/"}
+                    href={"/Contact"}
                     target={"_blank"}
                     sx={{
                       width: 150,

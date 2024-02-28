@@ -533,7 +533,7 @@ function Topbar() {
                   color="primary"
                   component="a"
                   target="blank"
-                  href="https://thomasharb.github.io/contact/"
+                  href="/Contact"
                   size="large"
                   sx={{
                     minWidth: 150,
@@ -655,7 +655,7 @@ function Topbar() {
                   color="primary"
                   component="a"
                   target="blank"
-                  href="https://thomasharb.github.io/contact/"
+                  href="/Contact"
                   size="large"
                   sx={{
                     minWidth: 150,
@@ -721,7 +721,7 @@ function Topbar() {
                   color="primary"
                   component="a"
                   target="blank"
-                  href="https://thomasharb.github.io/contact/"
+                  href="/Contact"
                   size="large"
                   sx={{
                     minWidth: 150,

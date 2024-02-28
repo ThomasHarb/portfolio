@@ -30,7 +30,7 @@ const Footer = () => {
       <Box marginTop={3} display={"flex"} justifyContent={"center"}>
         <Button
           component={"a"}
-          href={"https://thomasharb.github.io/contact/"}
+          href={"/Contact"}
           target={"_blank"}
           variant="contained"
           color="primary"
