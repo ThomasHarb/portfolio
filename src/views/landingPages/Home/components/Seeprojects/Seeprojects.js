@@ -82,7 +82,7 @@ const Seeprojects = () => {
               justifyContent="center"
               style={{ display: "flex", alignContent: "center" }}
             >
-              {/*<Card
+              <Card
                 sx={{
                   maxWidth: 343,
                   borderRadius: "20px",
@@ -180,7 +180,7 @@ const Seeprojects = () => {
               justifyContent="center"
               style={{ display: "flex", alignContent: "center" }}
             >
-               <Card
+              <Card
                 sx={{
                   maxWidth: 343,
                   borderRadius: "20px",
@@ -364,8 +364,8 @@ const Seeprojects = () => {
                     React - Material UI - Javascript
                   </Typography>
                 </CardContent>
-              </Card> */}
-              <Box
+              </Card>
+              {/*               <Box
                 display={"flex"}
                 justifyContent={"center"}
                 alignItems={"center"}
@@ -375,7 +375,7 @@ const Seeprojects = () => {
                 }}
               >
                 <Caroussel />
-              </Box>
+              </Box> */}
             </Grid>
           </Grid>
         </Box>
