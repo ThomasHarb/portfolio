@@ -103,7 +103,7 @@ const Footer = () => (
         Thomas Harbonnier a software engineer based in Strasbourg, France. This
         website showcases some of his personal and professional skills.
         <br /> This website is built with React and Material-UI, hosted on
-        GitHub Pages using Jekyll. The source code can be foun on GitHub
+        GitHub Pages. The source code can be found on GitHub
       </Typography>
     </Grid>
   </Grid>

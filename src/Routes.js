@@ -10,6 +10,7 @@ import { Contact as ContactView } from "./views/ContactPages";
 import {
   FastPDashboard as FastPDashboardView,
   NetflixProject as NetflixProjectView,
+  ProteomicsVisualizer as ProteomicsVisualizerView,
 } from "./views/Projects";
 
 const Routes = () => {
@@ -55,6 +56,17 @@ const Routes = () => {
           <WithLayout
             {...matchProps}
             component={NetflixProjectView}
+            layout={MainLayout}
+          />
+        ))()}
+      />
+      <Route
+        exact
+        path="/Proteomics-visualizer"
+        element={((matchProps) => (
+          <WithLayout
+            {...matchProps}
+            component={ProteomicsVisualizerView}
             layout={MainLayout}
           />
         ))()}

@@ -147,7 +147,7 @@ function Topbar() {
                         color="textSecondary"
                         href="/Netflix-project"
                       >
-                        Movies Data Analysis
+                        Proteomic Dashboard
                       </Link>
                     </MenuItem>
                     <MenuItem onClick={handleClose} href="/Fastp">
@@ -252,7 +252,7 @@ function Topbar() {
                         color="textSecondary"
                         href="/Netflix-project"
                       >
-                        Movies Data Analysis
+                        Proteomic Dashboard
                       </Link>
                     </MenuItem>
                     <MenuItem onClick={handleClose} href="/Fastp">
@@ -327,7 +327,7 @@ function Topbar() {
                         color="textSecondary"
                         href="/Netflix-project"
                       >
-                        Movies Data Analysis
+                        Proteomic Dashboard
                       </Link>
                     </MenuItem>
                   </Menu>
@@ -346,6 +346,82 @@ function Topbar() {
             </Box>
           )}
           {location.pathname === "/Netflix-project" && (
+            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Link
+                    underline="none"
+                    component="a"
+                    href="/"
+                    color="textSecondary"
+                  >
+                    Home
+                  </Link>
+                </MenuItem>
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Link
+                    underline="none"
+                    id="basic-button"
+                    aria-controls={open ? "basic-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                    color="textSecondary"
+                  >
+                    Projects
+                  </Link>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      "aria-labelledby": "basic-button",
+                    }}
+                  >
+                    <MenuItem onClick={handleClose} href="/Fastp">
+                      <Link
+                        underline="none"
+                        color="textSecondary"
+                        href="/Fastp"
+                      >
+                        FastP Dashboard
+                      </Link>
+                    </MenuItem>
+                  </Menu>
+                </MenuItem>
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Link
+                    underline="none"
+                    component="a"
+                    href="/Contact"
+                    color="textSecondary"
+                  >
+                    Contact
+                  </Link>
+                </MenuItem>
+              </Menu>
+            </Box>
+          )}
+          {location.pathname === "/Proteomics-visualizer" && (
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <MenuIcon />
@@ -492,12 +568,21 @@ function Topbar() {
                       color="textSecondary"
                       href="/Netflix-project"
                     >
-                      Movies Data Analysis
+                      Proteomic Dashboard
                     </Link>
                   </MenuItem>
                   <MenuItem onClick={handleClose} href="/Fastp">
                     <Link underline="none" color="textSecondary" href="/Fastp">
                       FastP Dashboard
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose} href="/Proteomics-visualizer">
+                    <Link
+                      underline="none"
+                      color="textSecondary"
+                      href="/Proteomics-visualizer"
+                    >
+                      Proteomics Visualizer
                     </Link>
                   </MenuItem>
                 </Menu>
@@ -585,12 +670,21 @@ function Topbar() {
                     color="textSecondary"
                     href="/Netflix-project"
                   >
-                    Movies Data Analysis
+                    Proteomic Dashboard
                   </Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose} href="/Fastp">
                   <Link underline="none" color="textSecondary" href="/Fastp">
                     FastP Dashboard
+                  </Link>
+                </MenuItem>
+                <MenuItem onClick={handleClose} href="/Proteomics-visualizer">
+                  <Link
+                    underline="none"
+                    color="textSecondary"
+                    href="/Proteomics-visualizer"
+                  >
+                    Proteomics Visualizer
                   </Link>
                 </MenuItem>
               </Menu>
@@ -638,7 +732,7 @@ function Topbar() {
                       color="textSecondary"
                       href="/Netflix-project"
                     >
-                      Movies Data Analysis
+                      Proteomic Dashboard
                     </Link>
                   </MenuItem>
                 </Menu>
@@ -667,6 +761,72 @@ function Topbar() {
             </Box>
           )}
           {location.pathname === "/Netflix-project" && (
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+              <Box
+                sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
+                marginLeft={8}
+                marginTop={1}
+              >
+                <Link
+                  underline="none"
+                  component="a"
+                  href="/"
+                  color="textSecondary"
+                >
+                  Home
+                </Link>
+                <Link
+                  underline="none"
+                  id="basic-button"
+                  aria-controls={open ? "basic-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  onClick={handleClick}
+                  marginLeft={4}
+                  color="textSecondary"
+                >
+                  Projects
+                </Link>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                  }}
+                >
+                  <MenuItem onClick={handleClose} href="/Fastp">
+                    <Link underline="none" color="textSecondary" href="/Fastp">
+                      FastP Dashboard
+                    </Link>
+                  </MenuItem>
+                </Menu>
+              </Box>
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  display: { xs: "none", md: "flex", lg: "flex" },
+                }}
+                marginRight={2}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component="a"
+                  target="blank"
+                  href="/Contact"
+                  size="large"
+                  sx={{
+                    minWidth: 150,
+                  }}
+                >
+                  Contact
+                </Button>
+              </Box>
+            </Box>
+          )}
+          {location.pathname === "/Proteomics-visualizer" && (
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               <Box
                 sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}

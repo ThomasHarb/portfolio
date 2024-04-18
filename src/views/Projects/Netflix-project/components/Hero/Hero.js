@@ -7,32 +7,11 @@ import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { CodeBlock, paraisoDark } from "react-code-blocks";
-import React, { useState } from "react";
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Card,
-  Typography,
-} from "@mui/material";
-import shows from "../../../../../data/Netflix_data.json";
-import JsonCountries from "../../../../../data/country-code.json";
-import InfoBox from "../Dashboard/InfoBox";
-import { CardContent } from "@mui/material";
+import React from "react";
+import Divider from "@mui/material/Divider";
+import { MdDashboard } from "react-icons/md";
+import { Card, Typography, Button } from "@mui/material";
 import "leaflet/dist/leaflet.css";
-import Avatar from "@mui/material/Avatar";
-import { GiDirectorChair, GiDualityMask } from "react-icons/gi";
-import { MdSummarize } from "react-icons/md";
-import Grid from "@mui/material/Grid";
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-  Marker,
-} from "react-simple-maps";
-import { geoEqualEarth } from "d3-geo";
-import countries from "../../../../../data/features.json";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -68,103 +47,286 @@ function a11yProps(index) {
 }
 
 const Hero = () => {
-  const [selectedShow, setSelectedShow] = useState("");
-  const [selectedShowData, setSelectedShowData] = useState(null);
-  const [castList, setCastList] = useState([]);
-  const [directorList, setDirectorList] = useState([]);
-  /*   const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -4047796 });
-  const [mapZoom, setMapZoom] = useState(3); */
-  const [countryList, setCountryList] = useState([]);
-  const markers = countryList.map((countryMember) => {
-    const selectedCountry = JsonCountries[countryMember];
-    return {
-      markerOffset: -15,
-      name: { countryMember },
-      coordinates: [
-        parseFloat(selectedCountry["Latitude (average)"]),
-        parseFloat(selectedCountry["Longitude (average)"]),
-      ],
-    };
-  });
-
-  const handleChangeMovie = (event) => {
-    const newSelectedShow = event.target.value;
-    setSelectedShow(newSelectedShow);
-    const selectedShowData = shows[newSelectedShow];
-    setSelectedShowData(selectedShowData);
-    setCountryList(
-      selectedShowData.country
-        .split(",")
-        .map((countryMember) => countryMember.trim())
-    );
-    setCastList(
-      selectedShowData.cast.split(",").map((castMember) => castMember.trim())
-    );
-    setDirectorList(
-      selectedShowData.director
-        .split(",")
-        .map((directorMember) => directorMember.trim())
-    );
-  };
-
-  const DropdownSelect = () => (
-    <FormControl fullWidth>
-      <InputLabel id="show-select-label">Select a Show</InputLabel>
-      <Select
-        labelId="show-select-label"
-        id="show-select"
-        value={selectedShow}
-        onChange={handleChangeMovie}
-      >
-        <MenuItem value="">
-          <em>None</em>
-        </MenuItem>
-        {Object.entries(shows).map(([showId, showData]) => (
-          <MenuItem key={showId} value={showId}>
-            {showData.title}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  );
-  /*   const isMd = useMediaQuery(theme.breakpoints.up("md"), {
-    defaultMatches: true,
-  }); */
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   const showLineNumbers = true;
-  const librariesImport = `import pandas as pd
-import argparse
+  const librariesImport = `from Bio import Entrez
+  import re
+  import pandas as pd  
+  import argparse
+  import math
+  import random
+  from bioservices import *
+  import numpy as np`;
 
+  const SecondPartScript = `parser = argparse.ArgumentParser(description='Retrieve biologic information from NCBI for proteomics data')
+  parser.add_argument('csv_file', help='Path to the CSV file')
+  args = parser.parse_args()
+  
+  csv_file = args.csv_file
+  df = pd.read_csv(csv_file, sep='\\t')
+  df = df.dropna()
+  
+  df = df.replace(',', '.', regex=True)`;
 
-parser = argparse.ArgumentParser(description='Split a CSV file into multiple files, one per column.')
-parser.add_argument('csv_file', help='Path to the CSV file to be processed')
-args = parser.parse_args()
-csv_file = args.csv_file`;
+  const ThirdPartScript = `dictionary_df = df.to_dict('index')
 
-  const SecondPartScript = `df = pd.read_csv(csv_file)
-df = df.fillna('')
-dictionary_df = df.to_dict('index')`;
+  listToSplit = ['Accession']
+  
+  for key in dictionary_df:
+      newDict = {}  
+      for subkey in dictionary_df[key]:  
+          if subkey in listToSplit:  
+              listElemColumn = dictionary_df[key][subkey].split(';')  
+              indexColumnName = 0 
+              for elem in listElemColumn:  
+                  indexColumnName += 1  
+                  nameColumn = f'{subkey}_{indexColumnName}' 
+                  elem = elem[elem.find('|') + 1: elem.find('|', elem.find('|') + 1)] 
+                  newDict[nameColumn] = elem  
+          else:
+              pass 
+      dictionary_df[key].update(newDict)  
+      for elem in listToSplit:  
+          dictionary_df[key].pop(elem)  
+  
+  df = pd.DataFrame(dictionary_df).T`;
 
-  const ThirdPartScript = `listToSplit = ['type','director','cast','country']
-for key in dictionary_df:
-  newDict = {}
-  for subkey in dictionary_df[key]:
-      if subkey in listToSplit:
-          listElemColumn = dictionary_df[key][subkey].split(',')
-          indexColumnName = 0
-          for elem in listElemColumn:
-              indexColumnName += 1
-              nameColumn = f'{subkey}_{indexColumnName}'
-              newDict[nameColumn] = elem        
+  const FourthPartScript = `protein_list = []
+  accession_list = df.index.values.tolist()
+  name_list = []
+  dicoOrganism = {}
+  dicoProtein = {}
+  dicoGroupSpecies = {}
+  dicoGroupFamily = {}
+  dicoFamilyProtein = {}
+  for elem in accession_list:
+      handle = Entrez.efetch(db="protein", id=elem, retmode='xml')
+      records = Entrez.read(handle)
+      nameOrganism = records[0]['GBSeq_organism'].lower().replace(' ','_')
+      s = records[0]['GBSeq_taxonomy']
+      stringFamily = records[0]["GBSeq_comment"]
+      matchFamily = re.search(r'Belongs to the (.+?) family', stringFamily)
+      if matchFamily:
+          familyProtein = matchFamily.group(1)
       else:
-          pass
-  dictionary_df[key].update(newDict)
-  for elem in listToSplit:
-      dictionary_df[key].pop(elem)`;
+          familyProtein = "undefined"
+      genome_classification = [x.strip() for x in s.split(';')]
+      specie = genome_classification[0]
+      family = genome_classification[-1]
+      # Split the string into a list of substrings
+      nameOrganism = nameOrganism.split('_')
+  
+  
+      # Join the first two elements of the list to get the desired substring
+      nameOrganism = '_'.join(nameOrganism[:2])
+      dicoOrganism[elem] = nameOrganism
+      dicoGroupSpecies[elem] = specie
+      dicoGroupFamily[elem] = family
+      protein = records[0]['GBSeq_locus']
+      dicoProtein[elem] = protein
+      dicoFamilyProtein[elem] = familyProtein
+      protein_list.append(protein)
+  df['Protein'] = df.index.map(dicoProtein)
+  df['Organism'] = df.index.map(dicoOrganism)
+  df['Specie'] = df.index.map(dicoGroupSpecies)
+  df['Family'] = df.index.map(dicoGroupFamily)
+  df['Family Protein'] = df.index.map(dicoFamilyProtein)
+  
+  
+  fileNameCsv = "input.csv"
+  df.to_csv(fileNameCsv, sep='\\t')`;
+
+  const FithPartScript = `def MeanColumn(dataframe , columnA, columnB, columnC, nameColumnMerge ):
+    dataframe[[columnA, columnB, columnC]] = dataframe[[columnA, columnB, columnC]].astype(float)
+    dataframe[nameColumnMerge] = dataframe[[columnA, columnB, columnC]].apply(lambda x: math.trunc(x.mean()), axis=1)
+    listColumn_drop = [columnA,columnB,columnC]
+    for elem in listColumn_drop:
+      dataframe = dataframe.drop(elem, axis=1)
+    return dataframe`;
+
+  const SixthPartScript = `def sankeyChart (dataframe):
+  result = {
+      'nodes': [], 
+      'links': []
+      }
+
+  # Add nodes to the dictionary
+  for node in df['Specie'].unique():
+      result['nodes'].append({'id': node, 'nodeColor': 'hsl(184, 70%, 50%)'})
+  for node in df['Family'].unique():
+      result['nodes'].append({'id': node, 'nodeColor': 'hsl(195, 70%, 50%)'})
+  for node in df['Organism'].unique():
+      result['nodes'].append({'id': node, 'nodeColor': 'hsl(36, 70%, 50%)'})
+  # Add links to the dictionary
+  groupedSpecie = dataframe.groupby('Specie')
+  for nameSpecie, groupSpecie in groupedSpecie:
+      dfDictSpecie = groupSpecie
+      groupedFamily = dfDictSpecie.groupby('Family')
+      for nameFamily, groupFamily in groupedFamily:
+          dfDictFamily = groupFamily
+          numberLinks = len(dfDictFamily)
+          result['links'].append({'source': nameSpecie, 'target': nameFamily, 'value': numberLinks})
+          groupedOrg = dfDictFamily.groupby('Organism')
+          for nameOrga, groupOrga in groupedOrg:
+              dfDictOrga = groupOrga
+              numberLinksOrga = len(dfDictOrga)
+              result['links'].append({'source': nameFamily, 'target': nameOrga, 'value': numberLinksOrga})
+
+
+  # Convert the dictionary to JSON format
+  json_result = json.dumps(result, indent=2)
+  return json_result
+
+
+def pcaChart (dataframe, listCondition):
+  x = dataframe.loc[:, listCondition].values
+  y = dataframe.loc[:,['Group']].values
+  x = StandardScaler().fit_transform(x)
+  pca = PCA(n_components=2)
+  principalComponents = pca.fit_transform(x)
+  principalDf = pd.DataFrame(data = principalComponents
+           , columns = ['principal component 1', 'principal component 2'])
+  finalDf = dataframe.merge(principalDf, how="cross")
+  grouped = dataframe.groupby('Group')
+  dataGroup = []
+  for name, group in grouped:
+      data = []
+      name = "Group " + str(int(name))
+      for index, row in finalDf.iterrows():
+          x = row['principal component 1']
+          y = row['principal component 2']
+          d = {
+                  'x': x,
+                  'y': y,
+              }
+          data.append(d)
+
+      json_dataGroup = {
+          'id': name,
+          'data': data
+      }
+      dataGroup.append(json_dataGroup)
+  return dataGroup
+
+def heatmapChart(dataframe, listCondition, nameColumn):
+  indexListColor = 0
+  dataPerCondition = []
+  for index, row in dataframe.iterrows():  
+      data = []
+      protein = row['Protein']
+      for elem in listCondition:    
+          value = row[elem+'_'+ nameColumn]
+          value = int(math.trunc(value*1000))
+          value  /= 1000  
+          if value != 0 :
+              value = math.log(value)
+          else:
+              pass
+          d = {
+              'x': elem,
+              'y': value
+          }
+          data.append(d)
+
+      json_data = {
+  'id': protein,
+  'data': data
+  }
+      dataPerCondition.append(json_data)
+
+  return dataPerCondition
+
+def overviewJson(dataframe, listCondition):
+  numOfProtein = dataframe.shape[0]
+  unique_count = dataframe['Organism'].nunique()
+  numCondition = len(listCondition)
+  json_data = {
+  'NumberOfProtein': numOfProtein,
+  "NumberOfOrganism": unique_count,
+  "NumberOfConditions" : numCondition,
+  }
+  return json_data
+
+def jsonTreemap(dataframeTreemap, listCondition, nameColumn, KeyfileName):
+  dataNode = []
+  listColor = ["hsl(13, 70%, 50%)","hsl(3, 70%, 50%)","hsl(191, 70%, 50%)","hsl(93, 70%, 50%)"]
+  indexListColor = 0
+  for elem in listCondition:
+      data = []
+      color = listColor[indexListColor]
+      for index, row in dataframeTreemap.iterrows():
+          # Extract the required values
+          protein = row['Protein']
+          value = row[elem+'_'+ nameColumn]
+          value = int(math.trunc(value*1000))
+          value  /= 1000  
+          
+          # Create a dictionary with the required format
+          d = {
+              'name': protein,
+              'color': color,
+              'loc': value
+          }
+          
+      # Append the dictionary to the list
+          data.append(d)
+      indexListColor += 1
+      Data_condition = {
+              'name': elem,
+              "color": color,
+          'children': data
+          }
+      dataNode.append(Data_condition)
+  json_data = {
+  'name': KeyfileName,
+  "color": "hsl(280, 70%, 50%)",
+  'children': dataNode
+  }
+
+  return json_data
+
+def DataCircleChart (dataframeTreemap, listCondition, nameColumn):
+  data = []
+  for elem in listCondition:
+      for index, row in dataframeTreemap.iterrows():
+          protein = row['Protein']
+          value = row[elem+'_'+ nameColumn]
+          value = int(math.trunc(value*1000))
+          value  /= 1000   # Normal
+          if value != 0 :
+              value = math.log(value)
+          else:
+              pass
+          d = {
+                  "id": protein,
+                  "group": elem,
+                  "value": value,
+                  "volume": 16
+          }
+          data.append(d)
+  return data
+
+def DataBarChart (dataframeTreemap, listCondition, nameColumn):
+  data = []
+  listColor = ["hsl(13, 70%, 50%)","hsl(3, 70%, 50%)","hsl(191, 70%, 50%)","hsl(93, 70%, 50%)"]
+  for elem in listCondition:
+      dicoBar = {}
+      dicoBar ['condition'] = elem
+      for index, row in dataframeTreemap.iterrows():
+          random_index = random.randint(0, len(listColor) - 1)
+          protein = row['Protein']
+          nameColor = str(protein+"Color")
+          value = row[elem+'_'+ nameColumn]
+          value = int(math.trunc(value*1000))
+          value  /= 1000  
+          dicoBar[protein] = value
+          dicoBar[nameColor]=listColor[random_index]
+      data.append(dicoBar)
+  return data`;
 
   const WholeScript = `import pandas as pd  # importing the pandas library
   import argparse  # importing the argparse library
@@ -245,34 +407,38 @@ for key in dictionary_df:
               fontWeight: 700,
             }}
           >
-            Netflix Movies Data Analysis
+            Dashboard for proteomics data
           </Typography>
         </Box>
         <Box marginBottom={4}>
           <Typography variant="h6" align={"center"} color={"textSecondary"}>
-            This project is design to analysis Netflix movies.
+            This project is to design and to create a Dashboard for proteomics
+            analysis.
             <br />
-            The dataset was downloaded from Kaggle website
+            Please note that this dashboard is currently in its initial version,
+            with additional features planned for future updates. The data used
+            here have been randomly generated and are not representative of any
+            actual biological processes.
           </Typography>
         </Box>
-        {/*         <Box
+        <Box
           marginBottom={{ xs: 4, sm: 6, md: 8 }}
           display="flex"
           flexDirection={{ xs: "column", sm: "row" }}
           justifyContent={"center"}
-          alignItems={{ xs: "stretched", sm: "center" }}
+          alignItems={{ xs: "center", sm: "center" }}
         >
           <Box
             component={Button}
             variant="contained"
             color="primary"
             size="large"
-            fullWidth={!isMd}
-            startIcon={<GitHubIcon />}
+            startIcon={<MdDashboard />}
+            href="/Proteomics-visualizer"
           >
-            View on Github
+            View Dashboard
           </Box>
-        </Box> */}
+        </Box>
         <Box
           sx={{
             width: "100%",
@@ -281,22 +447,31 @@ for key in dictionary_df:
           <Tabs value={value} onChange={handleChange} centered color="primary">
             <Tab label="Notebook" {...a11yProps(0)} />
             <Tab label="Code Source" {...a11yProps(1)} />
-            <Tab label="Display Results" {...a11yProps(2)} />
           </Tabs>
           <CustomTabPanel value={value} index={0}>
             {/* FIRST PART */}
-            <Typography variant="h5" align={"center"}>
-              First Part : Importing Libraries
+            <Typography variant="h5" align={"center"} marginTop={4}>
+              Importing Libraries
             </Typography>
             <br />
             <Typography variant="h6" align={"center"}>
-              This script use a Python 3 environment. Below we will find the
+              The script uses a Python 3 environment. Below we will find the
               different package needful :
               <br />
               - Pandas : A very powerfult package to manipulate, to filter and
               to sort data
-              <br />- Argparse : the recommended command-line parsing module in
-              the Python standard library
+              <br />
+              - Biopyhton: A collection of Python tools for computational
+              biology and bioinformatics tasks. It provides modules for parsing,
+              analyzing, and manipulating biological data such as DNA, RNA, and
+              protein sequences. Biopython enables tasks like sequence
+              alignment, structure prediction, and phylogenetic analysis.
+              <br />- Bioservices: A Python library that provides access to
+              various biological databases and web services, facilitating
+              automated retrieval and analysis of biological data. It offers a
+              unified interface to interact with multiple online resources,
+              including databases for sequence data, molecular structures, and
+              biological pathways.
             </Typography>
             <br />
             <Box
@@ -306,6 +481,7 @@ for key in dictionary_df:
               maxWidth={800}
               margin={"0 auto"}
               boxShadow={3}
+              marginBottom={4}
             >
               <CodeBlock
                 text={librariesImport}
@@ -314,30 +490,31 @@ for key in dictionary_df:
                 theme={paraisoDark}
               />
             </Box>
+            <Divider>
+              Retrieve biological information from NCBI - Step 1
+            </Divider>
             <br />
             {/* SECOND PART */}
             <Typography variant="h5" align={"center"}>
-              Second Part : Load Data
+              Load Data
             </Typography>
             <br />
             <Typography variant="h6" align={"center"}>
               The function read_csv from pandas is used here to load the csv
-              file "data.csv" as argument. If you want to change this file, just
-              replace it with your own one.
+              file "data.csv" as argument.
             </Typography>
             <br />
             <Typography variant="h6" align={"center"}>
-              Note that if there are missing values (NaN) or infinite values in
-              your dataset, they will be automatically replaced by zeroes. You
-              can modify this behavior using or not the method fillna.
+              Note that if there are missing values (NaN) in your dataset, they
+              will be automatically replaced by zeroes. You can modify this
+              behavior using or not the method fillna.
             </Typography>
             <br />
             <Typography variant="h6" align={"center"}>
-              Then , we need to modify some columns. Indeed, our data has some
-              columns which contains mulitple elements separate by coma. By
-              example the cast columns which contains the name of all actors
-              separateby coma). To do so, we modify our dataframe into
-              dictionary to easy manipulate them.
+              Then , we need to modify some columns. Indeed, our data use float
+              separate by coma. To process the model, all the columns should
+              have float type. So we need to replace all commas by dots and
+              convert every column into a float.
             </Typography>
             <br />
             <Box
@@ -356,22 +533,22 @@ for key in dictionary_df:
               />
             </Box>
             <br />
-            {/* THIRD PART */}
+            {/* THIRD PART Retrieve biological informations of each proteins */}
             <Typography variant="h5" align={"center"}>
-              Third Part : Modify Dataset
+              Separate all proteics accession numbers
             </Typography>
             <br />
             <Typography variant="h6" align={"center"}>
-              Then we convert the DataFrame into a dictionary, where each key in
-              the dictionary corresponds to a row in the original DataFrame and
-              the value for each key is another dictionary that contains the
-              column names and values for that row.
+              In the accession number columns we have multiple accession number
+              not useful and able to jeopardize the recovery of biological
+              informations.
             </Typography>
             <br />
             <Typography variant="h6" align={"center"}>
-              The second part is about to define a list of column names that
-              should be split into multiple columns. In this case, the list
-              includes "type", "director", "cast", and "country".
+              To do so we will seprate the different accession jnumbers into
+              multiple columns and only keep thye first accession as the main
+              protein information needed. So we only keep one unique identifier
+              per row for each proteins.
             </Typography>
             <br />
             <Typography variant="h6" align={"center"}>
@@ -407,6 +584,152 @@ for key in dictionary_df:
                 theme={paraisoDark}
               />
             </Box>
+            {/* FOURTH PART Retrieve biological informations of each proteins */}
+            <Typography variant="h5" align={"center"} marginTop={2}>
+              Retrieve biological information from NCBI
+            </Typography>
+            <br />
+            <Typography variant="h6" align={"center"}>
+              In the accession number columns we have multiple accession number
+              not useful and able to jeopardize the recovery of biological
+              informations.
+            </Typography>
+            <br />
+            <Typography variant="h6" align={"center"}>
+              To do so we will seprate the different accession jnumbers into
+              multiple columns and only keep thye first accession as the main
+              protein information needed. So we only keep one unique identifier
+              per row for each protein.
+            </Typography>
+            <br />
+            <Typography variant="h6" align={"center"}>
+              Then , loops through each row in the dictionary and checks if any
+              of the column names in the current row are in the list of columns
+              to be split.
+            </Typography>
+            <br />
+            <Typography variant="h6" align={"center"}>
+              If a column name is in the list, the script splits the values in
+              that column by the comma character and creates new columns in the
+              row dictionary for each value. The new column names are formed by
+              appending a number to the original column name.
+            </Typography>
+            <br />
+            <Typography variant="h6" align={"center"}>
+              The script then removes the original column from the row
+              dictionary and adds the new columns.
+            </Typography>
+            <br />
+            <Box
+              component={Card}
+              bgcolor={colors.blueGrey[800]}
+              padding={4}
+              maxWidth={800}
+              margin={"0 auto"}
+              boxShadow={3}
+              marginBottom={4}
+            >
+              <CodeBlock
+                text={FourthPartScript}
+                language="python"
+                showLineNumbers={showLineNumbers}
+                theme={paraisoDark}
+              />
+            </Box>
+            <Divider>Data Manipulation - Step 2</Divider>
+            <Typography variant="h5" align={"center"} marginTop={2}>
+              Mean of each condition and normalized conditions with the control
+            </Typography>
+            <br />
+            <Typography variant="h6" align={"center"}>
+              In biology experiments, triplicate measurements are often
+              performed to enhance the reliability and robustness of the
+              results.
+            </Typography>
+            <br />
+            <Typography variant="h6" align={"center"}>
+              Calculating the mean of triplicates helps mitigate the impact of
+              random variability and provides a more representative estimate of
+              the true value.
+            </Typography>
+            <br />
+            <Typography variant="h6" align={"center"}>
+              Normalizing triplicate measurements against a control sample
+              allows for comparison between different experimental conditions
+              while accounting for inherent variations in experimental setups.
+              This normalization helps to remove systematic biases and ensures
+              that any observed differences are attributable to the specific
+              experimental factors being investigated, rather than technical
+              artifacts.
+            </Typography>
+            <br />
+            <Typography variant="h6" align={"center"}>
+              Overall, combining triplicate measurements with normalization
+              against a control enhances the accuracy and validity of biological
+              experiments
+            </Typography>
+            <br />
+            <Typography variant="h6" align={"center"}>
+              The script then removes the original column from the row
+              dictionary and adds the new columns.
+            </Typography>
+            <br />
+            <Box
+              component={Card}
+              bgcolor={colors.blueGrey[800]}
+              padding={4}
+              maxWidth={800}
+              margin={"0 auto"}
+              boxShadow={3}
+              marginBottom={4}
+            >
+              <CodeBlock
+                text={FithPartScript}
+                language="python"
+                showLineNumbers={showLineNumbers}
+                theme={paraisoDark}
+              />
+            </Box>
+            <Typography variant="h5" align={"center"} marginTop={2}>
+              Transforming CSV Data into JSON for Dynamic Chart Visualization in
+              React
+            </Typography>
+            <br />
+            <Typography variant="h6" align={"center"}>
+              The purpose of this step is to manipulate CSV data to convert it
+              into a JSON format. This JSON file will serve as the data source
+              for a React application, enabling the visualization of charts
+              based on the CSV data.
+            </Typography>
+            <br />
+            <Typography variant="h6" align={"center"}>
+              By converting the CSV to JSON, we're facilitating the seamless
+              integration of the data into the React app, allowing for dynamic
+              chart rendering.
+            </Typography>
+            <br />
+            <Typography variant="h6" align={"center"}>
+              This approach ensures efficient data transfer between the backend
+              (Python) and frontend (React), enabling the display of insightful
+              visualizations directly from the original CSV dataset.
+            </Typography>
+            <br />
+            <Box
+              component={Card}
+              bgcolor={colors.blueGrey[800]}
+              padding={4}
+              maxWidth={800}
+              margin={"0 auto"}
+              boxShadow={3}
+              marginBottom={4}
+            >
+              <CodeBlock
+                text={SixthPartScript}
+                language="python"
+                showLineNumbers={showLineNumbers}
+                theme={paraisoDark}
+              />
+            </Box>
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
             <Box
@@ -424,363 +747,6 @@ for key in dictionary_df:
                 theme={paraisoDark}
               />
             </Box>
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={2}>
-            <Grid container direction="row" spacing={2}>
-              <Grid item xs={12} sm={12} md={16} lg={16}>
-                <Grid container direction="row" spacing={2}>
-                  <Grid item xs={6} sm={6} md={8} lg={8}>
-                    <Typography variant="h4">SELECT MOVIES</Typography>
-                  </Grid>
-                  <Grid item xs={6} sm={6} md={4} lg={4}>
-                    <DropdownSelect />
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid
-              container
-              direction="row"
-              spacing={2}
-              marginTop={2}
-              flexWrap="wrap"
-            >
-              <Grid item xs={12} sm={12} md={16} lg={16}>
-                <Grid container direction="row" spacing={2}>
-                  <Grid item xs={6} sm={6} md={4} lg={4}>
-                    <Grid container direction="column" spacing={2}>
-                      <Grid item xs={6} sm={6} md={4} lg={4}>
-                        <InfoBox
-                          title="Type"
-                          data={selectedShowData ? selectedShowData.type : ""}
-                        />
-                      </Grid>
-                      <Grid item xs={6} sm={6} md={4} lg={4}>
-                        <InfoBox
-                          title="Duration"
-                          data={
-                            selectedShowData ? selectedShowData.duration : ""
-                          }
-                        />
-                      </Grid>
-                      <Grid item xs={6} sm={6} md={4} lg={4}>
-                        <InfoBox
-                          title="Release year"
-                          data={
-                            selectedShowData
-                              ? selectedShowData.release_year
-                              : ""
-                          }
-                        />
-                      </Grid>
-                      <Grid item xs={6} sm={6} md={4} lg={4}>
-                        <InfoBox
-                          title="Rating"
-                          data={selectedShowData ? selectedShowData.rating : ""}
-                        />
-                      </Grid>
-                      <Grid item xs={6} sm={6} md={4} lg={4}>
-                        <Card
-                          className="infoBox"
-                          style={{
-                            width: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Typography
-                            className="infoBox__title"
-                            color="textSecondary"
-                          >
-                            Country
-                          </Typography>
-                          <h3 className="infoBox__data">
-                            {countryList.map((countryMember, index) => {
-                              return (
-                                <tr key={index}>
-                                  <td>{countryMember}</td>
-                                </tr>
-                              );
-                            })}
-                          </h3>
-                        </Card>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={6} sm={6} md={8} lg={8}>
-                    <Grid container direction="column" spacing={2}>
-                      <Grid item xs={8} sm={8} md={6} lg={6}>
-                        <Card
-                          sx={{
-                            borderRadius: "20px",
-                            boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
-                            transition: "0.3s",
-                            margin: "1px 0",
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Box sx={{ minWidth: "100%" }}>
-                            <Box
-                              sx={{
-                                padding: `4px 24px 0`,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                              }}
-                            >
-                              <Avatar
-                                alt={"brand logo"}
-                                sx={(theme) => ({
-                                  width: 48,
-                                  height: 48,
-                                  transform: "translateY(50%)",
-                                  "& > img": {
-                                    margin: 0,
-                                    backgroundColor: "common.white",
-                                  },
-                                  [theme.breakpoints.up("sm")]: {
-                                    width: 60,
-                                    height: 60,
-                                  },
-                                })}
-                              >
-                                <GiDualityMask />
-                              </Avatar>
-                              <Typography
-                                sx={{
-                                  textTransform: "uppercase",
-                                  fontSize: 14,
-                                  color: "grey.500",
-                                  letterSpacing: "1px",
-                                }}
-                              >
-                                Cast
-                              </Typography>
-                            </Box>
-                            <Box
-                              component="hr"
-                              sx={(theme) => ({
-                                backgroundColor: "grey.200",
-                                marginBottom: `${24 - 1}px`, // minus 1 due to divider height
-                                [theme.breakpoints.up("sm")]: {
-                                  marginBottom: `${30 - 1}px`, // minus 1 due to divider height
-                                },
-                              })}
-                            />
-                          </Box>
-                          <CardContent>
-                            <Typography
-                              variant="body2"
-                              component="div"
-                              color="text.secondary"
-                            >
-                              {castList.map((castMember, index) => (
-                                <tr key={index} style={{ marginTop: "10%" }}>
-                                  <td>{castMember}</td>
-                                </tr>
-                              ))}
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      </Grid>
-                      <Grid item xs={8} sm={8} md={6} lg={6}>
-                        <Card
-                          sx={{
-                            borderRadius: "20px",
-                            boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
-                            transition: "0.3s",
-                            margin: "1px 0",
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Box sx={{ minWidth: "100%" }}>
-                            <Box
-                              sx={{
-                                padding: `4px 24px 0`,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                              }}
-                            >
-                              <Avatar
-                                alt={"brand logo"}
-                                sx={(theme) => ({
-                                  width: 48,
-                                  height: 48,
-                                  transform: "translateY(50%)",
-                                  "& > img": {
-                                    margin: 0,
-                                    backgroundColor: "common.white",
-                                  },
-                                  [theme.breakpoints.up("sm")]: {
-                                    width: 60,
-                                    height: 60,
-                                  },
-                                })}
-                              >
-                                <GiDirectorChair />
-                              </Avatar>
-                              <Typography
-                                sx={{
-                                  textTransform: "uppercase",
-                                  fontSize: 14,
-                                  color: "grey.500",
-                                  letterSpacing: "1px",
-                                }}
-                              >
-                                Directed By
-                              </Typography>
-                            </Box>
-                            <Box
-                              component="hr"
-                              sx={(theme) => ({
-                                backgroundColor: "grey.200",
-                                marginBottom: `${24 - 1}px`, // minus 1 due to divider height
-                                [theme.breakpoints.up("sm")]: {
-                                  marginBottom: `${30 - 1}px`, // minus 1 due to divider height
-                                },
-                              })}
-                            />
-                          </Box>
-                          <CardContent>
-                            <Typography
-                              variant="body2"
-                              component="div"
-                              color="text.secondary"
-                            >
-                              {directorList.map((directorMember, index) => (
-                                <tr key={index}>
-                                  <td>{directorMember}</td>
-                                </tr>
-                              ))}
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      </Grid>
-                      <Grid item xs={8} sm={8} md={6} lg={6}></Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-
-            <Grid container direction="row" spacing={2} marginTop={4}>
-              <Grid item xs={12} sm={12} md={16} lg={16}>
-                <Card
-                  sx={{
-                    borderRadius: "20px",
-                    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
-                    transition: "0.3s",
-                    marginTop: "1px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <Box sx={{ minWidth: "100%" }}>
-                    <Box
-                      sx={{
-                        padding: `4px 24px 0`,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Avatar
-                        alt={"brand logo"}
-                        sx={(theme) => ({
-                          width: 48,
-                          height: 48,
-                          transform: "translateY(50%)",
-                          "& > img": {
-                            margin: 0,
-                            backgroundColor: "common.white",
-                          },
-                          [theme.breakpoints.up("sm")]: {
-                            width: 60,
-                            height: 60,
-                          },
-                        })}
-                      >
-                        <MdSummarize />
-                      </Avatar>
-                      <Typography
-                        sx={{
-                          textTransform: "uppercase",
-                          fontSize: 14,
-                          color: "grey.500",
-                          letterSpacing: "1px",
-                        }}
-                      >
-                        Description
-                      </Typography>
-                    </Box>
-                    <Box
-                      component="hr"
-                      sx={(theme) => ({
-                        backgroundColor: "grey.200",
-                        marginBottom: `${24 - 1}px`, // minus 1 due to divider height
-                        [theme.breakpoints.up("sm")]: {
-                          marginBottom: `${30 - 1}px`, // minus 1 due to divider height
-                        },
-                      })}
-                    />
-                  </Box>
-                  <CardContent>
-                    <Typography
-                      variant="body2"
-                      component="div"
-                      color="text.secondary"
-                    >
-                      {selectedShowData ? selectedShowData.description : ""}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
-            {/* <Grid container direction="row" spacing={2} marginTop={4}>
-              <Grid item xs={12} sm={12} md={12} lg={12}>
-                {countryList.map((countryMember, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>{countryMember}</td>
-                    </tr>
-                  );
-                })}
-                <ComposableMap
-                  projection="geoAzimuthalEqualArea"
-                  projectionConfig={{
-                    rotate: [-10.0, -52.0, 0],
-                    center: [-5, -3],
-                    scale: 1100,
-                  }}
-                >
-                  <Geographies
-                    geography={countries}
-                    fill="#D6D6DA"
-                    stroke="#FFFFFF"
-                    strokeWidth={0.5}
-                  >
-                    {({ geographies }) =>
-                      geographies.map((geo) => (
-                        <Geography key={geo.rsmKey} geography={geo} />
-                      ))
-                    }
-                  </Geographies>
-
-                  {markers.map((marker, index) => (
-                    <Marker key={index} coordinates={marker.coordinates}>
-                      <circle r={6} fill="red" />
-                    </Marker>
-                  ))}
-                </ComposableMap>
-              </Grid>
-            </Grid> */}
           </CustomTabPanel>
         </Box>
       </Box>

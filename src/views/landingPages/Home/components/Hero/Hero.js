@@ -6,16 +6,15 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import { FaGitAlt } from "react-icons/fa";
-import { FaPython } from "react-icons/fa6";
-import { TbBrandJavascript } from "react-icons/tb";
-import { VscTerminalBash } from "react-icons/vsc";
-import { FcLinux } from "react-icons/fc";
-import { FaDocker } from "react-icons/fa";
-import { SiMysql } from "react-icons/si";
-import { FaReact } from "react-icons/fa";
-import Tooltip from "@mui/material/Tooltip";
 /*import FondEcran from '../../../../../svg/sci-fi-futuriste-retro-annees-80-paysage-jeu-video-retrowave-vj-neons-vaporwave-vintage-stylise_2509.jpeg';*/
+/* import ReactCardCarousel from "react-card-carousel";
+import CardActions from "@mui/material/CardActions";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Avatar from "@mui/material/Avatar";
+import { FaChartArea } from "react-icons/fa";
+import { MdSpaceDashboard } from "react-icons/md";
+import { TbBrandJavascript } from "react-icons/tb"; */
 
 const Hero = () => {
   const theme = useTheme();
@@ -92,18 +91,7 @@ const Hero = () => {
                     marginTop={{ xs: 2, sm: 0 }}
                     marginLeft={{ sm: 2 }}
                     width={{ xs: "100%", md: "auto" }}
-                  >
-                    {/* <Button
-                    component={"a"}
-                    href={"https://thomasharb.github.io/projects/"}
-                    variant="outlined"
-                    color="primary"
-                    size="large"
-                    fullWidth={isMd ? false : true}
-                  >
-                    View Projects
-                  </Button> */}
-                  </Box>
+                  ></Box>
                   <Box
                     marginTop={{ xs: 2, sm: 0 }}
                     marginLeft={{ sm: 2 }}
