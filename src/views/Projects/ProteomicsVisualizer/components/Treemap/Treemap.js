@@ -168,7 +168,7 @@ const Treemap = ({ data /* see data tab */ }) => (
     valueFormat=".02s"
     margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
     label={(e) => e.id + " (" + e.formattedValue + ")"}
-    labelSkipSize={60}
+    labelSkipSize={50}
     labelTextColor={{
       from: "color",
       modifiers: [["darker", "3"]],

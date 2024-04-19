@@ -141,15 +141,6 @@ function Topbar() {
                       "aria-labelledby": "basic-button",
                     }}
                   >
-                    <MenuItem onClick={handleClose}>
-                      <Link
-                        underline="none"
-                        color="textSecondary"
-                        href="/Netflix-project"
-                      >
-                        Proteomic Dashboard
-                      </Link>
-                    </MenuItem>
                     <MenuItem onClick={handleClose} href="/Fastp">
                       <Link
                         underline="none"
@@ -246,15 +237,6 @@ function Topbar() {
                       "aria-labelledby": "basic-button",
                     }}
                   >
-                    <MenuItem onClick={handleClose} href="/Netflix-project">
-                      <Link
-                        underline="none"
-                        color="textSecondary"
-                        href="/Netflix-project"
-                      >
-                        Proteomic Dashboard
-                      </Link>
-                    </MenuItem>
                     <MenuItem onClick={handleClose} href="/Fastp">
                       <Link
                         underline="none"
@@ -320,17 +302,7 @@ function Topbar() {
                     MenuListProps={{
                       "aria-labelledby": "basic-button",
                     }}
-                  >
-                    <MenuItem onClick={handleClose} href="/Netflix-project">
-                      <Link
-                        underline="none"
-                        color="textSecondary"
-                        href="/Netflix-project"
-                      >
-                        Proteomic Dashboard
-                      </Link>
-                    </MenuItem>
-                  </Menu>
+                  ></Menu>
                 </MenuItem>
                 <MenuItem onClick={handleCloseUserMenu}>
                   <Link
@@ -345,7 +317,7 @@ function Topbar() {
               </Menu>
             </Box>
           )}
-          {location.pathname === "/Netflix-project" && (
+          {location.pathname === "/Proteomics" && (
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <MenuIcon />
@@ -562,25 +534,16 @@ function Topbar() {
                     "aria-labelledby": "basic-button",
                   }}
                 >
-                  <MenuItem onClick={handleClose} href="/Netflix-project">
-                    <Link
-                      underline="none"
-                      color="textSecondary"
-                      href="/Netflix-project"
-                    >
-                      Proteomic Dashboard
-                    </Link>
-                  </MenuItem>
                   <MenuItem onClick={handleClose} href="/Fastp">
                     <Link underline="none" color="textSecondary" href="/Fastp">
                       FastP Dashboard
                     </Link>
                   </MenuItem>
-                  <MenuItem onClick={handleClose} href="/Proteomics-visualizer">
+                  <MenuItem onClick={handleClose} href="/Proteomics">
                     <Link
                       underline="none"
                       color="textSecondary"
-                      href="/Proteomics-visualizer"
+                      href="/Proteomics"
                     >
                       Proteomics Visualizer
                     </Link>
@@ -664,25 +627,16 @@ function Topbar() {
                   "aria-labelledby": "basic-button",
                 }}
               >
-                <MenuItem onClick={handleClose} href="/Netflix-project">
-                  <Link
-                    underline="none"
-                    color="textSecondary"
-                    href="/Netflix-project"
-                  >
-                    Proteomic Dashboard
-                  </Link>
-                </MenuItem>
                 <MenuItem onClick={handleClose} href="/Fastp">
                   <Link underline="none" color="textSecondary" href="/Fastp">
                     FastP Dashboard
                   </Link>
                 </MenuItem>
-                <MenuItem onClick={handleClose} href="/Proteomics-visualizer">
+                <MenuItem onClick={handleClose} href="/Proteomics">
                   <Link
                     underline="none"
                     color="textSecondary"
-                    href="/Proteomics-visualizer"
+                    href="/Proteomics"
                   >
                     Proteomics Visualizer
                   </Link>
@@ -726,13 +680,13 @@ function Topbar() {
                     "aria-labelledby": "basic-button",
                   }}
                 >
-                  <MenuItem onClick={handleClose} href="/Netflix-project">
+                  <MenuItem onClick={handleClose} href="/Proteomics">
                     <Link
                       underline="none"
                       color="textSecondary"
-                      href="/Netflix-project"
+                      href="/Proteomics"
                     >
-                      Proteomic Dashboard
+                      Proteomic Visualizer
                     </Link>
                   </MenuItem>
                 </Menu>
@@ -760,7 +714,7 @@ function Topbar() {
               </Box>
             </Box>
           )}
-          {location.pathname === "/Netflix-project" && (
+          {location.pathname === "/Proteomics" && (
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               <Box
                 sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}

@@ -125,7 +125,7 @@ const Seeprojects = () => {
                         letterSpacing: "1px",
                       }}
                     >
-                      Project
+                      Project (V1.0.0)
                     </Typography>
                   </Box>
                   <Box
@@ -148,10 +148,15 @@ const Seeprojects = () => {
                     component="div"
                     color="text.secondary"
                   >
-                    Analysis or all movies on Netflix. The dataset has been
-                    downloaded from Kaggle. The data will be processed in Python
-                    then integrated in a MySQL database. The data will be then
-                    display in PowerBI.
+                    This Proteomics Analyzer Dashboard seamlessly integrates
+                    Python backend functionalities with ReactJS frontend
+                    interactivity, offering researchers a powerful tool for
+                    analyzing complex proteomic data. Leveraging Python's
+                    Pandas, NumPy, and SciPy libraries, the backend processes
+                    raw datasets with precision, while ReactJS provides an
+                    intuitive interface for data exploration. Through dynamic
+                    visualizations and customizable features, users can delve
+                    into protein expression profiles.
                   </Typography>
                   <Typography sx={{ mb: 1.5 }} color="text.secondary">
                     <br />
@@ -166,7 +171,7 @@ const Seeprojects = () => {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small" href="/Netflix-project">
+                  <Button size="small" href="/Proteomics">
                     Learn more
                   </Button>
                 </CardActions>
@@ -223,7 +228,7 @@ const Seeprojects = () => {
                         letterSpacing: "1px",
                       }}
                     >
-                      Project
+                      Project (V1.0.0)
                     </Typography>
                   </Box>
                   <Box
@@ -325,7 +330,7 @@ const Seeprojects = () => {
                         letterSpacing: "1px",
                       }}
                     >
-                      Project
+                      Project (V1.0.2)
                     </Typography>
                   </Box>
                   <Box

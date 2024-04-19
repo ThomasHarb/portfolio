@@ -28,7 +28,7 @@ const CirclePlot = ({ data }) => (
         },
       },
     }}
-    groups={["2308", "16MWDC", "PER"]}
+    groups={["Condition I", "Condition II", "Condition III"]}
     identity="id"
     value="value"
     valueScale={{ type: "linear", min: -10, max: 10, reverse: false }}
@@ -37,39 +37,19 @@ const CirclePlot = ({ data }) => (
       values: [4, 20],
       sizes: [6, 20],
     }}
-    layout="horizontal"
+    layout="vertical"
     gap={100}
     forceStrength={9}
     simulationIterations={260}
     colors={{ scheme: "dark2" }}
     borderColor="black"
     margin={{ top: 80, right: 100, bottom: 80, left: 100 }}
-    /*     axisTop={{
-      orient: "top",
-      tickSize: 10,
-      tickPadding: 5,
-      tickRotation: 0,
-      legend: "Value",
-      legendPosition: "middle",
-      legendOffset: -46,
-      truncateTickAt: 0,
-    }} 
-    axisRight={{
-      orient: "right",
-      tickSize: 10,
-      tickPadding: 5,
-      tickRotation: 0,
-      legend: "Conditions",
-      legendPosition: "middle",
-      legendOffset: 76,
-      truncateTickAt: 0,
-    }}*/
     axisBottom={{
       orient: "bottom",
       tickSize: 10,
       tickPadding: 5,
       tickRotation: 0,
-      legend: "Expression (log)",
+      legend: "Conditions",
       legendPosition: "middle",
       legendOffset: 46,
       truncateTickAt: 0,
@@ -79,7 +59,7 @@ const CirclePlot = ({ data }) => (
       tickSize: 10,
       tickPadding: 5,
       tickRotation: 0,
-      legend: "Conditions",
+      legend: "Expression (log)",
       legendPosition: "middle",
       legendOffset: -76,
       truncateTickAt: 0,

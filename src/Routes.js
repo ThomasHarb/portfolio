@@ -51,7 +51,7 @@ const Routes = () => {
       />
       <Route
         exact
-        path="/Netflix-project"
+        path="/Proteomics"
         element={((matchProps) => (
           <WithLayout
             {...matchProps}

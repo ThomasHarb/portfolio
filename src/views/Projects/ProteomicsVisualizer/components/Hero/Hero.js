@@ -650,7 +650,7 @@ function Hero() {
           gridColumn="span 12"
           borderRadius={"20px"}
           gridRow="span 2"
-          height={"3060px"}
+          height={"400px"}
           display={"flex"}
           alignItems={"center"}
           justifyContent={"center"}
@@ -715,18 +715,18 @@ function Hero() {
             )}
           />
         </Grid>
-        <Grid item xs={6} sm={6} md={6}>
+        {/*         <Grid item xs={6} sm={6} md={6}>
           <FormGroup>
             <FormControlLabel
               control={<Checkbox defaultChecked />}
               label="Display by groups"
             />
           </FormGroup>
-        </Grid>
+        </Grid> */}
       </Grid>
       {selectedOrganisms === null ? (
         <Typography>
-          Before displaying the treemap, choose an organism
+          Before displaying the charts, choose an organism.
         </Typography>
       ) : (
         <Box
@@ -746,6 +746,30 @@ function Hero() {
             height={"360px"}
           >
             <Sunburst data={DataSunburst} height={"350px"} />
+          </Box>
+          <Box
+            gridColumn="span 6"
+            borderRadius={"20px"}
+            gridRow="span 2"
+            height={"1080px"}
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            style={{ backgroundColor: "#2c3044" }}
+          >
+            <Treemap data={finalJson.Treemap[selectedOrganisms] || {}} />
+          </Box>
+          <Box
+            gridColumn="span 6"
+            borderRadius={"20px"}
+            gridRow="span 1"
+            height={"700px"}
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            style={{ backgroundColor: "#2c3044" }}
+          >
+            <CirclePlot data={finalJson.Circledot[selectedOrganisms] || []} />
           </Box>
           {/* <Box
             gridColumn="span 6"
@@ -770,18 +794,6 @@ function Hero() {
           <Box
             gridColumn="span 12"
             borderRadius={"20px"}
-            gridRow="span 4"
-            height={"720px"}
-            display={"flex"}
-            alignItems={"center"}
-            justifyContent={"center"}
-            style={{ backgroundColor: "#2c3044" }}
-          >
-            <Treemap data={finalJson.Treemap[selectedOrganisms] || {}} />
-          </Box>
-          <Box
-            gridColumn="span 12"
-            borderRadius={"20px"}
             gridRow="span 2"
             height={"1200px"}
             display={"flex"}
@@ -790,18 +802,6 @@ function Hero() {
             style={{ backgroundColor: "#2c3044" }}
           >
             <HeatMap data={finalJson.Heatmap[selectedOrganisms] || []} />
-          </Box>
-          <Box
-            gridColumn="span 12"
-            borderRadius={"20px"}
-            gridRow="span 3"
-            height={"720px"}
-            display={"flex"}
-            alignItems={"center"}
-            justifyContent={"center"}
-            style={{ backgroundColor: "#2c3044" }}
-          >
-            <CirclePlot data={finalJson.Circledot[selectedOrganisms] || []} />
           </Box>
         </Box>
       )}

@@ -12,6 +12,8 @@ import Divider from "@mui/material/Divider";
 import { MdDashboard } from "react-icons/md";
 import { Card, Typography, Button } from "@mui/material";
 import "leaflet/dist/leaflet.css";
+import "../../../../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import GanttChart from "../Gantt/Gant";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -447,6 +449,7 @@ def DataBarChart (dataframeTreemap, listCondition, nameColumn):
           <Tabs value={value} onChange={handleChange} centered color="primary">
             <Tab label="Notebook" {...a11yProps(0)} />
             <Tab label="Code Source" {...a11yProps(1)} />
+            <Tab label="Roadmap & Future Features" {...a11yProps(2)} />
           </Tabs>
           <CustomTabPanel value={value} index={0}>
             {/* FIRST PART */}
@@ -747,6 +750,11 @@ def DataBarChart (dataframeTreemap, listCondition, nameColumn):
                 theme={paraisoDark}
               />
             </Box>
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={2}>
+            <div>
+              <GanttChart />
+            </div>
           </CustomTabPanel>
         </Box>
       </Box>
