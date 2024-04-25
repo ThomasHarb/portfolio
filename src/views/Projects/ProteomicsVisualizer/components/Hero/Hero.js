@@ -5,9 +5,11 @@ import { MdNumbers } from "react-icons/md";
 import Box from "@mui/material/Box";
 import Sunburst from "../Sunburst/Sunburst";
 import DataSunburst from "../../../../../data/flare-2.json";
+import DataCircle from "../../../../../data/circle.json";
 import CirclePlot from "../CirclePlot/CirclePlot";
 import HeatMap from "../Heatmap/Heatmap";
 import Network from "../Network/Network";
+import Circle from "../Circle/Circle";
 import {
   TextField,
   MenuItem,
@@ -659,6 +661,19 @@ function Hero() {
           <Sankey data={dataSankey} />
         </Box>
       </Box>
+      {/*       <Grid
+        item
+        xs={12}
+        sm={12}
+        md={12}
+        textAlign={"center"}
+        marginBottom={2}
+        marginTop={2}
+        justifyContent={"center"}
+        alignContent={"center"}
+      >
+        <Circle data={DataCircle} />
+      </Grid> */}
       <Grid
         item
         xs={12}
@@ -715,14 +730,14 @@ function Hero() {
             )}
           />
         </Grid>
-        {/*         <Grid item xs={6} sm={6} md={6}>
-          <FormGroup>
+        <Grid item xs={6} sm={6} md={6}>
+          {/* <FormGroup>
             <FormControlLabel
               control={<Checkbox defaultChecked />}
               label="Display by groups"
             />
-          </FormGroup>
-        </Grid> */}
+          </FormGroup> */}
+        </Grid>
       </Grid>
       {selectedOrganisms === null ? (
         <Typography>
@@ -805,6 +820,17 @@ function Hero() {
           </Box>
         </Box>
       )}
+      <Grid
+        item
+        xs={12}
+        sm={12}
+        md={12}
+        textAlign={"center"}
+        marginBottom={2}
+        marginTop={2}
+      >
+        <Circle data={DataCircle} />
+      </Grid>
       {/* <Grid
         item
         xs={12}

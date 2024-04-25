@@ -417,10 +417,12 @@ def DataBarChart (dataframeTreemap, listCondition, nameColumn):
             This project is to design and to create a Dashboard for proteomics
             analysis.
             <br />
-            Please note that this dashboard is currently in its initial version,
-            with additional features planned for future updates. The data used
-            here have been randomly generated and are not representative of any
-            actual biological processes.
+            Please note that this dashboard is currently in it's initial version
+            (see in Roadmap tab), with additional features planned for future
+            updates. The data used here have been randomly generated for
+            proteins, organisms and abundance. They are not representative of
+            any actual biological processes.
+            <br />
           </Typography>
         </Box>
         <Box
@@ -448,8 +450,7 @@ def DataBarChart (dataframeTreemap, listCondition, nameColumn):
         >
           <Tabs value={value} onChange={handleChange} centered color="primary">
             <Tab label="Notebook" {...a11yProps(0)} />
-            <Tab label="Code Source" {...a11yProps(1)} />
-            <Tab label="Roadmap & Future Features" {...a11yProps(2)} />
+            <Tab label="Roadmap & Upcoming Features" {...a11yProps(2)} />
           </Tabs>
           <CustomTabPanel value={value} index={0}>
             {/* FIRST PART */}
@@ -698,6 +699,18 @@ def DataBarChart (dataframeTreemap, listCondition, nameColumn):
               React
             </Typography>
             <br />
+            <Typography variant="h5" align={"center"} marginTop={2}>
+              <ul>
+                <li>Sunburst chart</li>
+                <li>Sankey chart</li>
+                <li>PCA chart</li>
+                <li>Heatmap chart</li>
+                <li>Treemap chart</li>
+                <li>Circle dot chart</li>
+                <li>Bar chart</li>
+              </ul>
+            </Typography>
+            <br />
             <Typography variant="h6" align={"center"}>
               The purpose of this step is to manipulate CSV data to convert it
               into a JSON format. This JSON file will serve as the data source
@@ -735,23 +748,6 @@ def DataBarChart (dataframeTreemap, listCondition, nameColumn):
             </Box>
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
-            <Box
-              component={Card}
-              bgcolor={colors.blueGrey[800]}
-              padding={4}
-              maxWidth={1400}
-              margin={"0 auto"}
-              boxShadow={3}
-            >
-              <CodeBlock
-                text={WholeScript}
-                language="python"
-                showLineNumbers={showLineNumbers}
-                theme={paraisoDark}
-              />
-            </Box>
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={2}>
             <div>
               <GanttChart />
             </div>

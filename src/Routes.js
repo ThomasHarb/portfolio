@@ -12,6 +12,7 @@ import {
   NetflixProject as NetflixProjectView,
   ProteomicsVisualizer as ProteomicsVisualizerView,
 } from "./views/Projects";
+import { Hero as SuccessView } from "./views/Success";
 
 const Routes = () => {
   return (
@@ -23,6 +24,17 @@ const Routes = () => {
           <WithLayout
             {...matchProps}
             component={HomeView}
+            layout={MainLayout}
+          />
+        ))()}
+      />
+      <Route
+        exact
+        path="/Success"
+        element={((matchProps) => (
+          <WithLayout
+            {...matchProps}
+            component={SuccessView}
             layout={MainLayout}
           />
         ))()}

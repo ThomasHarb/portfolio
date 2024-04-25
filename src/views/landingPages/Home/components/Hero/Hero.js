@@ -82,7 +82,7 @@ const Hero = () => {
                     href={"/Contact"}
                     target={"_blank"}
                     sx={{
-                      width: 150,
+                      width: "50%",
                     }}
                   >
                     Contact Me

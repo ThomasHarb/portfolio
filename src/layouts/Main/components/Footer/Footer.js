@@ -7,6 +7,7 @@ import Link from "@mui/material/Link";
 import Photo from "../../../../svg/photoThomas.jpeg";
 import Avatar from "@mui/material/Avatar";
 import { PiDesktopTowerFill } from "react-icons/pi"; */
+import Link from "@mui/material/Link";
 
 const Footer = () => (
   <Grid container spacing={2}>
@@ -105,6 +106,16 @@ const Footer = () => (
         <br /> This website is built with React and Material-UI, hosted on
         GitHub Pages. The source code can be found on GitHub
       </Typography>
+      {/*       <div>
+        <Link
+          underline="none"
+          component="a"
+          href="/Success"
+          color="textSecondary"
+        >
+          Success
+        </Link>
+      </div> */}
     </Grid>
   </Grid>
 );
