@@ -591,7 +591,7 @@ function Hero() {
             fontWeight: 700,
           }}
         >
-          Dashboard Proteomics
+          Dashboard Proteomics (Version 0.7.0)
         </Typography>
       </Box>
       <Grid item xs={12} sm={12} md={12} textAlign={"center"} marginBottom={2}>
@@ -760,7 +760,8 @@ function Hero() {
             borderRadius={"20px"}
             height={"360px"}
           >
-            <Sunburst data={DataSunburst} height={"350px"} />
+            {/* <Sunburst data={DataSunburst} height={"350px"} /> */}
+            <Typography> Sunburst Work in progress</Typography>
           </Box>
           <Box
             gridColumn="span 6"
@@ -820,7 +821,7 @@ function Hero() {
           </Box>
         </Box>
       )}
-      <Grid
+      {/*       <Grid
         item
         xs={12}
         sm={12}
@@ -830,7 +831,7 @@ function Hero() {
         marginTop={2}
       >
         <Circle data={DataCircle} />
-      </Grid>
+      </Grid> */}
       {/* <Grid
         item
         xs={12}
